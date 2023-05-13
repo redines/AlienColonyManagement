@@ -1,4 +1,4 @@
-version: "2.1"
+version: "3.0"
 services:
   mariadb:
     image: lscr.io/linuxserver/mariadb:latest
@@ -8,8 +8,9 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - MYSQL_ROOT_PASSWORD=12345
-      - MYSQL_USER='mymy' #optional
-      - MYSQL_PASSWORD=passw0rd #optional
+      - MYSQL_DATABASE=neighbours
+      - MYSQL_USER=mymy
+      - MYSQL_PASSWORD=passw0rd
     volumes:
       - ./docker/mariadb:/config
     ports:
