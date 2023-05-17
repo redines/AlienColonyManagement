@@ -1,3 +1,4 @@
+
 #run workflow on self-hosted runner, see github documentation on how to set it up
 #runs-on: self-hosted
 
@@ -37,3 +38,4 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
