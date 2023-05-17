@@ -13,7 +13,7 @@ services:
       - MYSQL_PASSWORD=passw0rd
     volumes:
       - ./docker/mariadb:/config
-      - ./SQLSchema/NeighboursSchema.sql:/docker-entrypoint-initdb.d
+      # - ./SQLSchema/NeighboursSchema.sql:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
     restart: unless-stopped
