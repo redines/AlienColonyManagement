@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NeighbourApi;
+﻿namespace NeighbourApi.Models;
 
 public partial class Building
 {

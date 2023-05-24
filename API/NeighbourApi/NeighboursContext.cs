@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using NeighbourApi.Models;
 
 namespace NeighbourApi;
 
@@ -22,65 +21,47 @@ public partial class NeighboursContext : DbContext
     public virtual DbSet<Tenant> Tenants { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySql("name=ConnectionStrings:MariaDbConnectionString", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.6.13-mariadb"));
+        => optionsBuilder.UseSqlServer("Name=defaultConnectionString");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
-            .UseCollation("utf8mb4_general_ci")
-            .HasCharSet("utf8mb4");
-
         modelBuilder.Entity<Apartment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Id).HasName("PK__Apartmen__3214EC07CEBE8879");
 
-            entity.HasIndex(e => new { e.BuildingNumber, e.BuildingLetter }, "BuildingNumber");
-
-            entity.Property(e => e.Id).HasColumnType("bigint(20)");
-            entity.Property(e => e.ApartmentNumber).HasColumnType("int(11)");
-            entity.Property(e => e.BuildingLetter).HasMaxLength(5);
-            entity.Property(e => e.BuildingNumber).HasColumnType("bigint(20)");
-            entity.Property(e => e.LivingSize).HasColumnType("int(11)");
-            entity.Property(e => e.MonthlyRent).HasColumnType("bigint(20)");
-            entity.Property(e => e.NumberOfRooms).HasColumnType("int(20)");
-            entity.Property(e => e.NumberofTenants).HasColumnType("int(20)");
+            entity.Property(e => e.BuildingLetter)
+                .HasMaxLength(5)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Building).WithMany(p => p.Apartments)
                 .HasForeignKey(d => new { d.BuildingNumber, d.BuildingLetter })
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("apartments_ibfk_1");
+                .HasConstraintName("FK__Apartments__5441852A");
         });
 
         modelBuilder.Entity<Building>(entity =>
         {
-            entity.HasKey(e => new { e.BuildingNumber, e.BuildingLetter })
-                .HasName("PRIMARY")
-                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+            entity.HasKey(e => new { e.BuildingNumber, e.BuildingLetter }).HasName("PK__Building__97436DCCE9BCFAC8");
 
-            entity.Property(e => e.BuildingNumber).HasColumnType("bigint(20)");
-            entity.Property(e => e.BuildingLetter).HasMaxLength(5);
+            entity.Property(e => e.BuildingLetter)
+                .HasMaxLength(5)
+                .IsUnicode(false);
             entity.Property(e => e.LastTimeServiced).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Tenant>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Id).HasName("PK__Tenant__3214EC07B4E5E0B1");
 
             entity.ToTable("Tenant");
 
-            entity.HasIndex(e => e.ApartmentId, "ApartmentId");
-
-            entity.Property(e => e.Id).HasColumnType("bigint(20)");
-            entity.Property(e => e.Age).HasColumnType("int(11)");
-            entity.Property(e => e.ApartmentId).HasColumnType("bigint(20)");
-            entity.Property(e => e.IncomeMonth).HasColumnType("bigint(20)");
-            entity.Property(e => e.IncomeYear).HasColumnType("bigint(20)");
-            entity.Property(e => e.Name).HasMaxLength(255);
-            entity.Property(e => e.ProfilePicture).HasColumnType("blob");
+            entity.Property(e => e.Name)
+                .HasMaxLength(255)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Apartment).WithMany(p => p.Tenants)
                 .HasForeignKey(d => d.ApartmentId)
-                .HasConstraintName("tenant_ibfk_1");
+                .HasConstraintName("FK__Tenant__Apartmen__59FA5E80");
         });
 
         OnModelCreatingPartial(modelBuilder);

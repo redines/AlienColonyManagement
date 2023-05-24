@@ -1,4 +1,4 @@
-﻿namespace NeighbourApi;
+﻿namespace NeighbourApi.Models;
 
 public partial class Tenant
 {
@@ -7,8 +7,6 @@ public partial class Tenant
     public string Name { get; set; } = null!;
 
     public int? Age { get; set; }
-
-    public byte[]? ProfilePicture { get; set; }
 
     public long? IncomeYear { get; set; }
 
