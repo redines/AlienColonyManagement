@@ -11,7 +11,7 @@ This project will be a fullstack application utilizing as many technologies as I
 
 List as of now decided upon tech:
 
-1. MariaDb
+1. MariaDb - changed to sql server express because of preferense
 2. redis
 3. .Net
 4. GraphQl
