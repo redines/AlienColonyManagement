@@ -1,54 +1,65 @@
-CREATE OR REPLACE USER mymy IDENTIFIED BY 'passw0rd';
-CREATE DATABASE IF NOT EXISTS `neighbours`;
-/*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */
+-- Adminer 4.8.1 MySQL 5.5.5-10.6.12-MariaDB-log dump
 
-USE `neighbours`;
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
--- neighbours.Buildings definition
-CREATE TABLE `Buildings` (
-  `BuildingNumber` BIGINT NOT NULL,
-  `BuildingLetter` VARCHAR(5) NOT NULL,
-  `LastTimeServiced` datetime DEFAULT NULL,
-  PRIMARY KEY (`BuildingNumber`,`BuildingLetter`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+USE `AlienColony`;
 
--- neighbours.Apartments definition
+SET NAMES utf8mb4;
 
-CREATE TABLE `Apartments` (
+DROP TABLE IF EXISTS `Colony`;
+CREATE TABLE `Colony` (
   `Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `ApartmentNumber` INT DEFAULT NULL,
-  `LivingSize` int(11) DEFAULT NULL,
-  `NumberOfRooms` int(20) DEFAULT NULL,
-  `NumberofTenants` int(20) DEFAULT NULL,
-  `MonthlyRent` bigint(20) DEFAULT NULL,
-  `BuildingNumber` BIGINt NOT NULL,
-  `BuildingLetter` VARCHAR(5) NOT NULL,
-  PRIMARY KEY (`Id`),
-  FOREIGN KEY (`BuildingNumber`, `BuildingLetter`) REFERENCES Buildings(`BuildingNumber`, `BuildingLetter`)
+  `ColonyName` varchar(255) NOT NULL,
+  `MaxPopulation` bigint(20) NOT NULL,
+  `WaterConsumption` bigint(20) DEFAULT NULL,
+  `EnergyConsumption` bigint(20) DEFAULT NULL,
+  `FoodConsumption` bigint(20) DEFAULT NULL,
+  `Income` bigint(20) DEFAULT NULL,
+  `Outcome` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- neighbours.Tenants definition
 
-CREATE TABLE `Tenant` (
-  `Id` bigint(20) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `Companies`;
+CREATE TABLE `Companies` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `ColonyId` bigint(20) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `Age` int(11) DEFAULT NULL,
-  `ProfilePicture` BLOB DEFAULT NULL,
-  `IncomeYear` bigint(20) DEFAULT NULL,
-  `IncomeMonth` bigint(20) DEFAULT NULL,
-  `ApartmentId` bigint(20),
+  `NumbEmployees` int(10) unsigned DEFAULT NULL,
+  `Income` bigint(20) unsigned DEFAULT NULL,
+  `Outcome` bigint(20) unsigned DEFAULT NULL,
+  `TypeofCompany` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  FOREIGN KEY (ApartmentId) REFERENCES Apartments(Id)
+  KEY `ColonyId` (`ColonyId`),
+  KEY `TypeofCompany` (`TypeofCompany`),
+  CONSTRAINT `Companies_ibfk_1` FOREIGN KEY (`ColonyId`) REFERENCES `Colony` (`Id`) ON DELETE CASCADE,
+  CONSTRAINT `Companies_ibfk_2` FOREIGN KEY (`TypeofCompany`) REFERENCES `TypeofCompany` (`Id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- neighbours.Apartments definition
 
-CREATE TABLE `TenantStorage` (
+DROP TABLE IF EXISTS `Population`;
+CREATE TABLE `Population` (
   `Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `StorageSize` INT DEFAULT NULL,
-  `BuildingId` bigint(20),
-  `ApartmentId` bigint(20),
+  `ColonyId` bigint(20) DEFAULT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Age` int(11) NOT NULL,
+  `Occupation` varchar(255) DEFAULT NULL,
+  `Income` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  FOREIGN KEY (BuildingId) REFERENCES Buildings(Id),
-  FOREIGN KEY (ApartmentId) REFERENCES Apartments(Id)
+  KEY `ColonyId` (`ColonyId`),
+  CONSTRAINT `Population_ibfk_1` FOREIGN KEY (`ColonyId`) REFERENCES `Colony` (`Id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+DROP TABLE IF EXISTS `TypeofCompany`;
+CREATE TABLE `TypeofCompany` (
+  `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Type` varchar(255) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- 2023-06-17 16:56:36
