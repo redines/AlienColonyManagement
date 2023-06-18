@@ -5,6 +5,11 @@ This project is my place to experiment with new topics and fundamental skills I 
 
 The goal will be that everything is versioned controlled as per safe devops guidelines.
 
+## Commands
+
+Scaffold database with pommelo:
+dotnet ef dbcontext scaffold "Server=localhost; port=3306;User=pontus;Password=nisseHasse#34;Database=AlienColony" "Pomelo.EntityFrameworkCore.MySql"
+
 ## About
 
 This project will be a fullstack application utilizing as many technologies as I want to learn. 
