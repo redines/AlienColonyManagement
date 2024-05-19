@@ -1,5 +1,5 @@
 # neighbours
-practice project with safe devops approach
+practice project with safe devops approach and clean architecture
 
 This project is my place to experiment with new topics and fundamental skills I have to improve on. I will utilize a full safe devops approach, or atleast as much as I can while utilizing githubs tools. 
 
